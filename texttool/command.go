@@ -21,6 +21,10 @@ func Command(s string) string {
 				text[r-1] = strings.ToLower(text[r-1])
 				text = append(text[:r], text[r+1:]...)
 				r--
+			case "(cap)":
+				text[r-1] = strings.ToUpper(text[r-1][:1]) +strings.ToLower(text[r-1][1:])
+				text = append(text[:r], text[r+1:]...)
+				r--
 			}
 		}
 

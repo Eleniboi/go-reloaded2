@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"go-reloaded/texttool"
 	"os"
+	"strings"
 )
 
 func main() {
@@ -24,14 +25,28 @@ func main() {
 	}
 
 	result := string(file)
-	result = texttool.Command(result)
-
-	result = texttool.Article(result)
-	result = texttool.Base(result)
+	result = processor(result)
 
 	err = os.WriteFile(outputfile, []byte(result), 0644)
 	if err != nil {
 		fmt.Println("Error writing file, ", err)
 		return
 	}
+}
+
+func processor(s string) string {
+
+	text := strings.Split(s, "\n")
+
+	for i := 0; i < len(text); i++ {
+
+		text[i] = texttool.Command(text[i])
+		text[i] = texttool.Base(text[i])
+		//text[i] = texttool.CommandN(text[i])
+		text[i] = texttool.Article(text[i])
+		text[i] = texttool.Punctuation(text[i])
+		text[i] = texttool.Quote(text[i])
+
+	}
+	return strings.Join(text, "\n")
 }
